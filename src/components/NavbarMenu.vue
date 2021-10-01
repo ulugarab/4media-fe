@@ -2,7 +2,7 @@
   <div>
     <v-app-bar
         app
-        color="dark"
+        style="background: #110c19"
         dark
     >
       <div class="d-flex align-center">
@@ -38,7 +38,7 @@
                       v-on="on"
                       text
                   >
-                    <span class="mr-2">Jangari</span>
+                    <span class="mr-2">Kinolar</span>
                   </v-btn>
 
                 </template>
@@ -66,7 +66,7 @@
                       v-on="on"
                       text
                   >
-                    <span class="mr-2">Jangari</span>
+                    <span class="mr-2">Seriallar</span>
                   </v-btn>
 
                 </template>
@@ -94,7 +94,7 @@
                       v-on="on"
                       text
                   >
-                    <span class="mr-2">Jangari</span>
+                    <span class="mr-2">Multfilmlar</span>
                   </v-btn>
 
                 </template>
