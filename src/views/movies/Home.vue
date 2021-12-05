@@ -9,108 +9,100 @@
         show-arrows-on-hover
     >
       <v-carousel-item
-          v-for="(item,i) in items"
+          v-for="(item,i) in poster"
           :key="i"
-          :src="item.src"
+          :src="item.image"
       >
 
       </v-carousel-item>
     </v-carousel>
-    <div class="py-3">
-      <div class="white--text ma-2 mx-16">
-        <h2 class="">
-          <a class="white--text">
-            Ko'rishingizni tavsiya qilamiz
-            <v-icon
-                dark
-                style="font-size: 30px">
-              mdi mdi-chevron-right
-            </v-icon>
-          </a>
-        </h2>
-        <p class="black--text-50"><a class="black--text-50">Qancha ko'p qarasangiz, tavsiyalar shunchalik yaxshi
-          bo'ladi</a></p>
-      </div>
-      <v-sheet
-          max-width="100%"
-          style="background: transparent"
+    <div v-for="movie in homemovies" :key="movie">
+      <div class="py-3">
 
-      >
-        <v-slide-group
-            v-model="model"
-            class="pa-4"
-            dark
+        <div class="white--text ma-2 mx-16">
+          <h2 class="">
+            <a class="white--text">
+              {{movie.title}}
+              <v-icon
+                  dark
+                  style="font-size: 30px">
+                mdi mdi-chevron-right
+              </v-icon>
+            </a>
+          </h2>
+          <p class="black--text-50"><a class="black--text-50">{{movie.small_title}}</a></p>
+        </div>
+        <v-sheet
+            max-width="100%"
+            style="background: transparent"
+
         >
-          <v-slide-item
-              v-for="n in movies"
-              :key="n"
-              v-slot="{ active, toggle }"
-
+          <v-slide-group
+              v-model="model"
+              class="pa-4"
+              dark
           >
-            <v-card
-                :color="active ? 'primary' : 'grey lighten-1'"
-
-                class="ma-6 v-card-slide"
-                style="border-radius: 12px;"
-                height="260"
-                width="175"
-                @click="toggle"
+            <v-slide-item
+                v-for="n in movie.movies"
+                :key="n"
 
             >
-              <v-img height="100%" style="border-radius: 12px" :src="n.src" />
+              <v-card
+                  :color="active ? 'primary' : 'grey lighten-1'"
 
-              <v-row
-                  align="center"
-                  justify="center"
-
+                  class="ma-6 v-card-slide"
+                  style="border-radius: 12px;"
+                  height="260"
+                  width="175"
+                  @click="toDetailMovie(n.id)"
 
               >
+                <v-img height="100%" style="border-radius: 12px" :src="n.photo" />
 
-                <div class="hover-box">
-                  <div class="top">
-                    <v-icon>mdi-bookmark</v-icon>
-                    <v-icon>mdi-share-variant</v-icon>
-                  </div>
+                <v-row
+                    align="center"
+                    justify="center"
 
-                  <div class="rating">
-                    <span>9,9</span>
-                    <i class="fa fa-bars"></i>
-                  </div>
 
-                  <div class="progress-bar">
-                    <p>Сюжет</p>
-                    <div class="progress">
-                      <span></span>
+                >
+
+                  <div class="hover-box">
+                    <div class="top">
+                      <v-icon>mdi-bookmark</v-icon>
+                      <v-icon>mdi-share-variant</v-icon>
                     </div>
+
+                    <div class="rating">
+                      <span>9,9</span>
+                      <i class="fa fa-bars"></i>
+                    </div>
+
+                    <div class="progress-bar">
+                      <p>Сюжет</p>
+                      <div class="progress">
+                        <span></span>
+                      </div>
+                    </div>
+
+                    <p class="text">{{ n.year }}, {{n.country}}, {{n.genres[0]}}</p>
+                    <p class="text">{{ n.minutes }}</p>
                   </div>
 
-                  <p class="text">2016, США, Боевик</p>
-                  <p class="text">134 минуты</p>
-                </div>
 
-                <v-scale-transition>
+                </v-row>
 
-                  <v-icon
-                      v-if="active"
-                      color="white"
-                      size="48"
-                      v-text="'mdi-close-circle-outline'"
-                  ></v-icon>
+                <v-card-actions>
+                  <div class="text-content d-flex">
+                    <h5>{{ n.title }}</h5>
+                    <p class="type-of-subscribe mx-5">{{movie.type}}</p>
+                  </div>
+                </v-card-actions>
+              </v-card>
+            </v-slide-item>
+          </v-slide-group>
+        </v-sheet>
 
-                </v-scale-transition>
-
-              </v-row>
-
-              <v-card-actions>
-                <div class="text-content d-flex">
-                  <h5>{{ n.name }}</h5>
-                  <p class="type-of-subscribe mx-5">Бесплатно</p>
-                </div>
-              </v-card-actions>
-            </v-card>
-          </v-slide-item>
-        </v-slide-group>
-      </v-sheet>
+      </div>
 
     </div>
     <div class="py-3">
@@ -475,6 +467,7 @@
     </div>
 <!---->
     <div class="py-3">
+
       <div class="white--text ma-2 mx-16">
         <h2 class="">
           <a class="white--text">
@@ -569,6 +562,7 @@
         </v-slide-group>
 
       </v-sheet>
+
     </div>
 
   </div>
@@ -576,6 +570,8 @@
 
 <script>
 // @ is an alias to /src
+
+import {$api} from "../../plugins/api";
 
 export default {
   name: 'Home',
@@ -631,6 +627,7 @@ export default {
           name: 'Qasoskorlar',
         },
       ],
+      homemovies: null,
       interesting: [
         {
           src: 'https://static.tvtropes.org/pmwiki/pub/images/100420.jpg',
@@ -666,11 +663,34 @@ export default {
           name: 'Qasoskorlar',
         },
       ],
-
-
-
+      categories: null,
+      poster: null,
     }
   },
+  mounted() {
+    this.onCarousel();
+    this.onMovies();
+  },
+  methods: {
+    async onCarousel() {
+      let resp = await $api.movies.home.poster.get()
+
+
+      this.poster = resp.data.results
+
+    },
+    async onMovies() {
+      let resp = await $api.movies.home.movie.get()
+
+
+      this.homemovies = resp.data.results
+
+    },
+    toDetailMovie(id) {
+      this.$router.push({name: 'About', params: {id: id}})
+    }
+
+  }
 }
 </script>
 
